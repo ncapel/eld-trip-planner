@@ -128,7 +128,6 @@ body {
 	padding: 1rem;
 }
 
-/* Loading overlay */
 .loading-overlay {
 	position: fixed;
 	top: 0;
@@ -160,7 +159,6 @@ body {
 	}
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
 	.App-main {
 		flex-direction: column;

@@ -175,4 +175,7 @@
 	.hours-summary {
 		grid-template-columns: 1fr;
 	}
+	.location-address {
+		max-width: 150px;
+	}
 }

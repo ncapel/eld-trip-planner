@@ -12,7 +12,6 @@ const MapDisplay = ({ route, hosStops }) => {
 	useEffect(() => {
 		if (!route || !mapContainer.current) return;
 
-		// Initialize map
 		map.current = new mapboxgl.Map({
 			container: mapContainer.current,
 			style: 'mapbox://styles/mapbox/streets-v11',
@@ -23,23 +22,17 @@ const MapDisplay = ({ route, hosStops }) => {
 			zoom: 5,
 		});
 
-		// Add navigation control
 		map.current.addControl(new mapboxgl.NavigationControl());
 
-		// Wait for map to load
 		map.current.on('load', () => {
-			// Combine all coordinates to find bounds
 			const coordinates = [];
 
-			// Add route segments
 			route.segments.forEach((segment, index) => {
 				const id = `route-${index}`;
 				const routeCoordinates = segment.geometry.coordinates;
 
-				// Add coordinates to overall array for bounds calculation
 				coordinates.push(...routeCoordinates);
 
-				// Add route line
 				map.current.addSource(id, {
 					type: 'geojson',
 					data: {
@@ -64,8 +57,6 @@ const MapDisplay = ({ route, hosStops }) => {
 				});
 			});
 
-			// Add markers for locations
-			// Current location
 			addMarker(
 				map.current,
 				[
@@ -76,7 +67,6 @@ const MapDisplay = ({ route, hosStops }) => {
 				'#3182CE'
 			);
 
-			// Pickup location
 			addMarker(
 				map.current,
 				[
@@ -87,7 +77,6 @@ const MapDisplay = ({ route, hosStops }) => {
 				'#38A169'
 			);
 
-			// Dropoff location
 			addMarker(
 				map.current,
 				[
@@ -98,10 +87,7 @@ const MapDisplay = ({ route, hosStops }) => {
 				'#E53E3E'
 			);
 
-			// Add markers for rest stops
 			hosStops.forEach((stop, index) => {
-				// For simplicity, we'll place rest stops along the route
-				// In a real app, we would calculate proper coordinates
 				const segmentIndex = Math.min(
 					index % route.segments.length,
 					route.segments.length - 1
@@ -122,9 +108,7 @@ const MapDisplay = ({ route, hosStops }) => {
 				}
 			});
 
-			// Add fuel stops
 			route.fuel_stops.forEach((stop, index) => {
-				// For simplicity, we'll evenly distribute fuel stops
 				const segmentIndex = index % route.segments.length;
 				const segment = route.segments[segmentIndex];
 				const coordinates = segment.geometry.coordinates;
@@ -144,7 +128,6 @@ const MapDisplay = ({ route, hosStops }) => {
 				}
 			});
 
-			// Fit map to show all points
 			if (coordinates.length > 0) {
 				const bounds = coordinates.reduce((bounds, coord) => {
 					return bounds.extend(coord);
@@ -156,7 +139,6 @@ const MapDisplay = ({ route, hosStops }) => {
 			}
 		});
 
-		// Cleanup
 		return () => {
 			if (map.current) {
 				map.current.remove();
@@ -203,14 +185,11 @@ const MapDisplay = ({ route, hosStops }) => {
 	);
 };
 
-// Helper function to add a marker
 function addMarker(map, coordinates, title, color) {
-	// Create a DOM element for the marker
 	const el = document.createElement('div');
 	el.className = 'marker';
 	el.style.backgroundColor = color;
 
-	// Add the marker to the map
 	new mapboxgl.Marker({
 		element: el,
 		anchor: 'bottom',

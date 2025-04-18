@@ -41,13 +41,11 @@ const ELDLogs = ({ logs }) => {
 								{log.grid.map((row, rowIndex) => (
 									<div key={rowIndex} className='grid-row'>
 										{row.map((cell, cellIndex) => {
-											// Calculate hour and quarter
 											const hour = Math.floor(
 												cellIndex / 4
 											);
 											const quarter = cellIndex % 4;
 
-											// Determine if this cell is active
 											const isActive = cell === 1;
 
 											return (
@@ -120,7 +118,9 @@ const ELDLogs = ({ logs }) => {
 									<tr key={i}>
 										<td>{location.time}</td>
 										<td>{location.status}</td>
-										<td className='location-address'>
+										<td
+											className='location-address'
+											title={location.location}>
 											{location.location}
 										</td>
 									</tr>
